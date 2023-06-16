@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 import random
 import json
 import nltk
@@ -23,7 +23,7 @@ class AIChat():
         self.lemmatizer = WordNetLemmatizer()
         with open('intents.json') as file:
             self.training_data = json.load(file)
-
+            print(self.training_data)
         self.training_in_progress = False
         self.ignore = ['?', '.', '!', ',']
         self.load()
@@ -55,6 +55,8 @@ class AIChat():
                 # add the class to the classes list
                 if intent['tag'] not in self.classes:
                     self.classes.append(intent['tag'])
+                    print(intent['tag'])
+                    time.sleep(5)
                 
         # stem, lemmatize and lower each word, and remove duplicates
         self.words = self.clean_words(self.words)
@@ -69,6 +71,8 @@ class AIChat():
 
 
     def find_training_set(self):
+        #needs refactoring
+        #currently when AI is retrained, it will use old training data and only rebuild necessary files if they are deleted beforehand
         try:
             for attr in [self.words, self.classes, self.documents]:
                 continue
@@ -154,7 +158,7 @@ class AIChat():
 
     def chat(self, msg):
         bag = self.bag_of_words(msg, self.words)
-        bag = np.array(bag).reshape((1, 62))
+        bag = np.array(bag).reshape((1, len(bag)))
         results = self.model.predict(bag)#returns list of a list [[n1, n2, n3, n4]]
         results_index = np.argmax(results)#returns index of where max value is located
         intent_tag = self.classes[results_index]#match the most likely value to our tag
@@ -163,17 +167,26 @@ class AIChat():
             for i in self.training_data["intents"]:
                 if i['tag'] == intent_tag:
                     responses = i['responses']
-
+            print(f'''{intent_tag}: {max(results[0])}''')
+            print(self.classes)
             return random.choice(responses)
         
-        # else:
-        #     return "Not sure how to respond to that"
+        else:
+            return None
 
 
 if __name__ == '__main__':
     #testing
     bot = AIChat()
-    # bot.train_model()
-    response = bot.chat('do you age')
+    bot.train_model()
+    response = bot.chat('shutup')
+    print(response)
+    response = bot.chat('hey')
+    print(response)
+    response = bot.chat('age?')
+    print(response)
+    response = bot.chat('byeee')
+    print(response)
+    response = bot.chat('got any jokes?')
     print(response)
 

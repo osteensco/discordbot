@@ -99,9 +99,9 @@ async def on_message(message):
         
         if "lol" in message.content:
             await message.channel.send(f"""yes, {message.author.display_name}... humor.""")
-
-        if client.user.mentioned_in(message):
-            reply = API['chat'].chat(message.content)
+        
+        reply = API['chat'].chat(message.content)
+        if reply:
             await message.channel.send(reply)
 
 
