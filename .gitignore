@@ -1,0 +1,7 @@
+/venv
+/chatbot_model.h5
+/classes.pkl
+/documents.pkl
+/words.pkl
+/chat/__pycache__
+/token.env
