@@ -1,13 +1,11 @@
 import numpy as np
-import tflearn
-import tensorflow as tf
+
 import random
 import json
 import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
 import pickle
-import time
 from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 from keras.models import Sequential, load_model
@@ -105,8 +103,7 @@ class AIChat():
             training.append([bag, output_row])
 
         random.shuffle(training)
-        # print(training)
-        # training = np.array(training)
+
 
         train_x = np.array([item[0] for item in training])
         train_y = np.array([item[1] for item in training])
@@ -168,13 +165,13 @@ class AIChat():
                     responses = i['responses']
 
             return random.choice(responses)
-            #this could also return other actions, API calls, etc
         
-        else:
-            return "Not sure how to respond to that"
+        # else:
+        #     return "Not sure how to respond to that"
 
 
 if __name__ == '__main__':
+    #testing
     bot = AIChat()
     # bot.train_model()
     response = bot.chat('do you age')
