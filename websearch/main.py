@@ -14,4 +14,11 @@ class GoogleSearch():
 
 
 
+if __name__ == '__main__':
+    #testing
+    results = GoogleSearch().search('Tennessee Vols Football')
+    print(f'''{len(results)} results found''')
+    for result in results:
+        print(result)
+
 

@@ -26,8 +26,8 @@ async def search_google(txt, message):
     '''
     Searches google using the entire text following the command, returns the first 5 results.
     '''
-    await message.channel.send(message.author.mention)
     results = API['google'].search(txt)
+    await message.channel.send(message.author.mention)
     return results
 
 async def generate_link(txt, message):
