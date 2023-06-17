@@ -10,7 +10,7 @@
          "context_set": ""
         },
         {"tag": "goodbye",
-         "patterns": ["cya", "See you later", "Goodbye", "I am Leaving", "bye", "night!", "adios", "goodnight"],
+         "patterns": ["cya", "See you later", "Goodbye", "I am Leaving", "bye", "night!", "adios", "goodnight", "see ya"],
          "responses": ["Just leave then.", "ok byyyeeeeee", "Goodbye!"],
          "context_set": ""
         },
@@ -28,6 +28,16 @@
         "patterns": ["Nobody wants your opinion", "shutup", "nobody asked you", "I wasn't talking to you", "you're annoying", "idiot", "stupid", "what's your problem"],
         "responses": ["wow, super rude", "sheesh okay man sorry", "ok then"],
         "context_set": ""
-       }
+       },
+       {"tag": "google",
+       "patterns": ["google", "can you search google", "can you google", "I need you to google"],
+       "responses": ["I feel like you could do this but ok", "here's what I found", "does this help?"],
+       "context_set": ""
+      },
+      {"tag": "funny",
+       "patterns": ["lol", "lmao", "lololol", "nice one", "hilarious", "that is pretty funny", "that was hilarious", "that was funny"],
+       "responses": ["you're funny", "ha", "yes... humor"],
+       "context_set": ""
+      }
    ]
 }

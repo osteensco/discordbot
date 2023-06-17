@@ -23,13 +23,24 @@ server = client.get_guild(SERVER)
 
 # command functions
 async def search_google(txt, message):
-    API['google'].search(txt)
+    '''
+    Searches google using the entire text following the command, returns the first 5 results.
+    '''
+    await message.channel.send(message.author.mention)
+    results = API['google'].search(txt)
+    return results
 
 async def generate_link(txt, message):
+    '''
+    Creates an invite link that does not expire.
+    '''
     link = await message.channel.create_invite(max_age=0)
     return f"""Here ya go: {link}"""
 
 async def retrain_AIChat(txt, message):
+    '''
+    Executes the AIChat train_model() method. Only the owner of brobot can use this command.
+    '''
     admin_role =  message.guild.get_role(1003377962978123827)
     if admin_role in message.author.roles:
         status = discord.Activity(type=discord.ActivityType.listening, name='The Spirit Consults')
@@ -58,9 +69,12 @@ commands = {
 }
 
 async def display_commands(txt, message):
-    commmands_list = 'I can execute the following commands: '
+    '''
+    Lists all currently available commands.
+    '''
+    commmands_list = 'I can execute the following commands: \n'
     for cmd in commands.keys():
-        commmands_list += f'''\n!{cmd}'''
+        commmands_list += f'''\n!{cmd}: {commands[cmd].__doc__}'''
     
     return commmands_list
 
@@ -68,7 +82,22 @@ commands['help'] = display_commands
 
 
 
+async def execute_command(cmd, txt, message):
+    command = commands[cmd]
+    response = await command(txt, message)
+    if response:
+        if isinstance(response, list):
+            for result in response:
+                await message.channel.send(result)
+        else:
+            await message.channel.send(response)
 
+
+
+
+
+
+# event listeners
 @client.event
 async def on_ready():
     await client.wait_until_ready()
@@ -79,6 +108,10 @@ async def on_ready():
 async def on_message(message):
 
     if str(message.author) != 'brobot#8118':
+        reply = API['chat'].chat(message.content)
+        if reply:
+            await message.channel.send(reply)
+
         index = message.content.find('!')
         if index != -1:
             try:
@@ -91,18 +124,9 @@ async def on_message(message):
             cmd = message.content[index+1:end_index]
             await message.channel.send("beep boop")
             if cmd in commands:
-               response = await commands[cmd](txt, message)
-               if response:
-                await message.channel.send(response)
+               await execute_command(cmd, txt, message)
             else:
                 await message.channel.send(f'''sorry, "{cmd}" is not a command that I have, for a list of valid commands use !help''')
-        
-        if "lol" in message.content:
-            await message.channel.send(f"""yes, {message.author.display_name}... humor.""")
-        
-        reply = API['chat'].chat(message.content)
-        if reply:
-            await message.channel.send(reply)
 
 
 
