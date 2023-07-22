@@ -13,6 +13,7 @@ load_dotenv('token.env')
 TOKEN = os.environ.get('DISCORD_TOKEN')
 SERVER = os.environ.get('DISCORD_CHANNEL')
 DEFAULT_CHANNEL = os.environ.get('DEFAULT_CHANNEL')
+ADMIN_ROLE_ID = os.environ.get('ADMIN_ROLE_ID')
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -41,7 +42,7 @@ async def retrain_AIChat(txt, message):
     '''
     Executes the AIChat train_model() method. Only the owner of brobot can use this command.
     '''
-    admin_role =  message.guild.get_role(1003377962978123827)
+    admin_role =  message.guild.get_role(ADMIN_ROLE_ID)
     if admin_role in message.author.roles:
         status = discord.Activity(type=discord.ActivityType.listening, name='The Spirit Consults')
         await client.change_presence(activity=status)
